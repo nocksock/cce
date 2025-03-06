@@ -1,9 +1,5 @@
-export function setupCounter(element: HTMLButtonElement) {
-  let counter = 0
-  const setCounter = (count: number) => {
-    counter = count
-    element.innerHTML = `count is ${counter}`
-  }
-  element.addEventListener('click', () => setCounter(++counter))
-  setCounter(0)
-}
+export * from "./view";
+export * from "./custom-element";
+export * from "./context";
+export { html } from "lit-html";
+export { signal, effect, computed } from "kloen";

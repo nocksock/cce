@@ -7,7 +7,16 @@
     <title>Vite App</title>
   </head>
   <body>
-    <div id="app"></div>
+    <my-root>
+      <my-element></my-element>
+      <my-element></my-element>
+    </my-root>
+
+    <my-root interval="2000">
+      <my-element></my-element>
+      <my-element></my-element>
+    </my-root>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
