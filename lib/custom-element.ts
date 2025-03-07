@@ -51,9 +51,7 @@ export class CustomElement extends HTMLElement {
       const $prop = signal(initalValue)
 
       Object.defineProperty(this, key, {
-        get() {
-          return $prop
-        },
+        get() { return $prop },
         set(value) {
           $prop(typeof valueFn === 'function' ? valueFn(value) : value)
         },
@@ -71,7 +69,7 @@ export class CustomElement extends HTMLElement {
   #mountCleanup?: () => void
   connectedCallback() {
     if (this.render) {
-      this.#removeRender = effect(() => render(this.render(), this.shadowRoot))
+      this.#removeRender = effect(() => render(this.render(this), this.shadowRoot))
     }
 
     this.#mountCleanup = this.mount()

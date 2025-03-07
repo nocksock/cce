@@ -2,4 +2,5 @@
 
 :root {
   font-family: var(--font-monospace-code);
+  color-scheme: light dark;
 }

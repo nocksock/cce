@@ -1,0 +1,20 @@
+{
+  "name": "src",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Nils Riedemann",
+  "license": "ISC",
+  "packageManager": "pnpm@10.5.2",
+  "dependencies": {
+    "@nocksock/cce": "link:.."
+  },
+  "devDependencies": {
+    "lit-html": "^3.2.1"
+  }
+}
