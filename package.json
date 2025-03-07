@@ -1,12 +1,12 @@
 {
-  "name": "moep",
+  "name": "@nocksock/cce",
   "version": "0.0.5",
   "type": "module",
   "files": [
     "dist",
     "index.d.ts"
   ],
-  "module": "./dist/moep.js",
+  "module": "./dist/cce.js",
   "types": "./index.d.ts",
   "exports": {
     "types": "./index.d.ts",

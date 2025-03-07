@@ -5,8 +5,8 @@ export default defineConfig({
     target: 'esnext',
     lib: {
       entry: './lib/main.ts',
-      name: 'moep',
-      fileName: 'moep',
+      name: 'cce',
+      fileName: 'cce',
       formats: ['es'],
     },
   },

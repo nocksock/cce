@@ -1,4 +1,4 @@
-# moep - create custom element
+# cce - create custom element
 
 helpers for creating Web Components
 
