@@ -6,7 +6,7 @@
     "dist",
     "index.d.ts"
   ],
-  "module": "./dist/counter.js",
+  "module": "./dist/moep.js",
   "types": "./index.d.ts",
   "exports": {
     "types": "./index.d.ts",
