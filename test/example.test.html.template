@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <script type="module">
+      import { runTests } from '@web/test-runner-mocha';
+      import { expect } from '@esm-bundle/chai';
+
+      runTests(async () => {
+        // write your tests inline
+        describe('HTML tests', () => {
+          it('works', () => {
+            expect('foo').to.equal('foo');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

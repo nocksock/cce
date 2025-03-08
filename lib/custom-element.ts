@@ -128,4 +128,11 @@ export class CustomElement extends HTMLElement {
    * Unmount is called when the element is disconnected from the DOM.
    */
   unmount() {}
+
+  /**
+   * Dispatch a custom event with the given type and detail.
+   */
+  dispatch<E extends string, T>(type: E, detail: T) {
+    this.dispatchEvent(new CustomEvent(type, { detail, bubbles: true, composed: true }))
+  }
 }

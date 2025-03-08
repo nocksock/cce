@@ -1,0 +1,75 @@
+<html>
+  <body>
+    <script type="module">
+      import { CustomElement, html } from '../lib/main.ts'
+      import { nextFrame } from "./test-helpers.js"
+      import { runTests } from '@web/test-runner-mocha'
+      import { expect } from '@esm-bundle/chai'
+
+      class ParentElement extends CustomElement {
+        value = this.provide('value', 'default value')
+
+        setup() {
+          this.addEventListener('change-value', () => this.value('from event'))
+        }
+
+        render() {
+          return html`
+            <button @click=${() => this.value('from button')}>
+              Change value
+            </button>
+            <slot></slot>
+          `
+        }
+      }
+
+      class ChildElement extends CustomElement {
+        value = this.consume('value')
+        render() {
+          return html`
+            <div>
+              <button @click=${() => this.dispatch('change-value')}>
+                trigger event
+              </button>
+
+              ${this.value()}
+            </div>
+          `
+        }
+      }
+
+      customElements.define('parent-element', ParentElement)
+      customElements.define('child-element', ChildElement)
+
+      runTests(async () => {
+        describe('HTML tests', () => {
+          it('works', async () => {
+            const parent = document.querySelector('parent-element')
+            const child = document.querySelector('child-element')
+
+            expect(child.shadowRoot.innerHTML).to.contain('default value')
+
+            parent.shadowRoot.querySelector('button').click()
+
+            await nextFrame(() => {
+              expect(child.shadowRoot.innerHTML).to.contain('from button')
+            })
+
+            child.shadowRoot.querySelector('button').click()
+
+            await nextFrame(() => {
+              expect(child.shadowRoot.innerHTML).to.contain('from event')
+            })
+
+          })
+        })
+      })
+    </script>
+
+    <parent-element>
+      <div>
+        <child-element></child-element>
+      </div>
+    </parent-element>
+  </body>
+</html>
