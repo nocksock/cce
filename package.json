@@ -10,7 +10,7 @@
   "types": "./index.d.ts",
   "exports": {
     "types": "./index.d.ts",
-    "import": "./dist/counter.js"
+    "import": "./dist/cce.js"
   },
   "scripts": {
     "dev": "vite",
