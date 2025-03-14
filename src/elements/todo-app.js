@@ -1,6 +1,7 @@
 import { html } from 'lit-html'
 import { css, CustomElement } from '../../lib/main'
 import { todoContext } from './todos'
+import "./todo-list.js"
 
 export const toggleAction = (id, completed) => {
   return new CustomEvent('toggle', {
@@ -19,7 +20,7 @@ export class TodoApp extends CustomElement {
       .then(response => response.json())
       .then(json => this.todos(json))
 
-    this.addEventListener('toggle', (e) => {
+    this.on('toggleAction', (e) => {
       this.todos(this.todos().map(todo => {
         if (todo.id === e.detail.id) {
           return { ...todo, completed: e.detail.completed }
@@ -42,6 +43,7 @@ export class TodoApp extends CustomElement {
       gap: 1rem;
     }
   `
+
   render() {
     return html`
       <div>

@@ -8,8 +8,6 @@ class TodoList extends CustomElement {
     limit: (value = -1) => Number(value),
     completed: Boolean,
   }
-  // TODO: find a way create reactive private state
-  // #someVar = this.state(defaultValue) maybe?
 
   list = this.consume(todoContext)
 
