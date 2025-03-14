@@ -9,11 +9,14 @@ class BasicElement extends CustomElement {
     return html`<div>${this.name()}</div>`
   }
 }
+
 customElements.define('basic-element', BasicElement)
 
 describe('MyElement', () => {
   it('renders', async () => {
-    const el = await fixture(html`<basic-element name="Hello foo"></basic-element>`)
+    const el = await fixture(html`<basic-element .name=${"Hello foo"}></basic-element>`)
     expect(el.shadowRoot.innerHTML).to.contain('Hello foo')
+    el.name = 'Hello bar'
+    expect(el.shadowRoot.innerHTML).to.contain('Hello bar')
   })
 })

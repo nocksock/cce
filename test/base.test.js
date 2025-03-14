@@ -6,6 +6,7 @@ class BasicElement extends CustomElement {
     return html`<div>Hello World</div>`
   }
 }
+
 customElements.define('basic-element', BasicElement)
 
 describe('MyElement', () => {

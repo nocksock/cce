@@ -51,16 +51,15 @@
 
             parent.shadowRoot.querySelector('button').click()
 
-            await nextFrame(() => {
-              expect(child.shadowRoot.innerHTML).to.contain('from button')
-            })
+            await nextFrame()
+
+            expect(child.shadowRoot.innerHTML).to.contain('from button')
 
             child.shadowRoot.querySelector('button').click()
 
-            await nextFrame(() => {
-              expect(child.shadowRoot.innerHTML).to.contain('from event')
-            })
+            await nextFrame()
 
+            expect(child.shadowRoot.innerHTML).to.contain('from event')
           })
         })
       })

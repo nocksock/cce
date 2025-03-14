@@ -1,10 +1,5 @@
-export const nextFrame = (cb) => {
+export const nextFrame = () => {
   const { promise, resolve } = Promise.withResolvers()
-
-  requestAnimationFrame(() => {
-    cb?.()
-    resolve()
-  })
-
+  requestAnimationFrame(resolve)
   return promise
 }
