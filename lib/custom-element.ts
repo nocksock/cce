@@ -171,6 +171,7 @@ export class CustomElement extends HTMLElement {
     * disconnected from the DOM. To be used in mount()
     */
   on(type: string, handler: (e: CustomEvent) => void) {
+    // TODO: allow calls from withing setup() as well that are not removed on unmount
     invariant(this.#lifecycle() == 'mount', "on() must only be called in mount(). Use addEventListener() elsewhere. Was called in" + this.#lifecycle())
     const remove = addEventListener(this, type, handler)
     this.#onUnmount.add(remove)
