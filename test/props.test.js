@@ -5,7 +5,6 @@ class BasicElement extends CustomElement {
   static props = {
     name: String
   }
-
   render() {
     return html`<div>${this.name()}</div>`
   }
