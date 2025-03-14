@@ -3,7 +3,7 @@
   "version": "0.0.8",
   "type": "module",
   "files": [
-    "dist",
+    "dist/cce.js",
     "index.d.ts"
   ],
   "module": "./dist/cce.js",
