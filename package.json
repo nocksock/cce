@@ -1,6 +1,6 @@
 {
   "name": "@nocksock/cce",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "files": [
     "dist/cce.js",
@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "release": "pnpm run build && pnpm version patch && pnpm publish",
+    "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks",
     "test": "web-test-runner test/**/*.test.{js,html,ts} --coverage --node-resolve"
   },
   "devDependencies": {
