@@ -1,6 +1,6 @@
-# cce - create custom elemen (working title)
+# CCE (working title)
 
-A base class for creating Web Components more conveniently.
+Base class and helpers for creating custom-elements aka web components more conveniently.
 Built on signals `lit-html` providing helpers for event handling.
 
 > [!WARNING]
