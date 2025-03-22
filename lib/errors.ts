@@ -1,4 +1,13 @@
-export const invariant = (cond: any, msg: string): asserts cond => {
-  if(cond) return
-  throw new Error(msg)
+const prefix: string = 'Invariant failed';
+
+export function invariant(
+  condition: any,
+  message?: string | (() => string),
+): asserts condition {
+  if (condition) return
+
+  const provided: string | undefined = typeof message === 'function' ? message() : message;
+  const value: string = provided ? `${prefix}: ${provided}` : prefix;
+
+  throw new Error(value);
 }
