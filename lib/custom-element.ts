@@ -1,6 +1,6 @@
 import { consume, Context, provide } from './context'
-import { render, html } from 'lit-html'
-import { signal, effect } from 'kloen'
+import { render, html } from './html'
+import { signal, effect } from './signals'
 import { invariant } from './errors'
 import { addEventListener, dispatch } from './events'
 

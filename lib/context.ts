@@ -1,4 +1,4 @@
-import { signal, effect, computed } from 'kloen'
+import { signal, effect, computed } from './signals'
 
 const REQ = 'request-context-signal'
 
