@@ -22,12 +22,19 @@ const getInitialValue = <R>(
   return domValue
 }
 
+type PropValue = <T,R>(value: T) => R
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+
 const propRegistry = Symbol()
+type CustomElementClass = typeof CustomElement
 export class CustomElement extends HTMLElement {
   // TODO: move this to props.ts as well somehow?
-  static [propRegistry] = {}
-  static props = {}
-  static handle = {}
+  static [propRegistry]: Record<string, PropValue> = {}
+  static props: Record<string, PropValue> = {}
   static style = new CSSStyleSheet()
 
   static get observedAttributes() {
@@ -48,18 +55,21 @@ export class CustomElement extends HTMLElement {
     super()
     this.#lifecycle('constructor');
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot?.adoptedStyleSheets.push(this.constructor.style)
+
+    const constructor = this.constructor as CustomElementClass
 
     // Register all event handlers
-    this.#lifecycle('constructor:register-handlers');
-    for (const key in this.constructor.handle) {
-      this.on(key, this.constructor.handle[key])
-    }
+    // this.#lifecycle('constructor:register-handlers');
+    // for (const key in constructor.handle) {
+    //   this.on(key, constructor.handle[key])
+    // }
 
-    // Create accessor for each attribute
-    this.#lifecycle('constructor:register-accessors');
-    for (const key in this.constructor[propRegistry]) {
-      const valueFn = this.constructor[propRegistry][key]
+    // Create acustom-elementssor for each attribute
+    // TODO: extract into module
+    this.#lifecycle('constructor:register-acustom-elementssors');
+    for (const key in constructor[propRegistry]) {
+      const valueFn = constructor[propRegistry][key]
+      // @ts-expect-error
       const attrValue = this[key] || this.getAttribute(key)
       const initalValue = getInitialValue(valueFn, attrValue)
       const $prop = signal(initalValue)
@@ -80,6 +90,7 @@ export class CustomElement extends HTMLElement {
   }
 
   attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
+    // @ts-ignore
     this[name] = newValue
   }
 
@@ -90,7 +101,7 @@ export class CustomElement extends HTMLElement {
     if (this.render) {
       this.#onUnmount.add(effect(() => {
         this.#lifecycle('render');
-        return render(this.render(this), this.shadowRoot)
+        return render(this.render(this), this.shadowRoot!)
       }))
     }
 
@@ -101,6 +112,7 @@ export class CustomElement extends HTMLElement {
   disconnectedCallback() {
     this.#lifecycle('disconnectedCallback');
     for (const cleanup of this.#onUnmount) {
+      // @ts-ignore
       invariant(typeof cleanup === 'function', `Cleanup function must be a function, received ${typeof cleanup} instead.`)
       this.#lifecycle('cleanup');
       cleanup()
@@ -133,7 +145,7 @@ export class CustomElement extends HTMLElement {
    * This method will be called whenever a reactive value that is used in the 
     * render method changes. This method should return a lit-html template.
    */
-  render() {
+  render(self: typeof this) {
     return html`<slot></slot>`
   }
 
@@ -173,6 +185,7 @@ export class CustomElement extends HTMLElement {
   on(type: string, handler: (e: CustomEvent) => void) {
     // TODO: allow calls from withing setup() as well that are not removed on unmount
     invariant(this.#lifecycle() == 'mount', "on() must only be called in mount(). Use addEventListener() elsewhere. Was called in" + this.#lifecycle())
+    // @ts-ignore
     const remove = addEventListener(this, type, handler)
     this.#onUnmount.add(remove)
   }
