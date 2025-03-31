@@ -31,10 +31,11 @@ type PropValue = <T,R>(value: T) => R
 
 const propRegistry = Symbol()
 type CustomElementClass = typeof CustomElement
+export type PropMap = Record<string, PropValue>
 export class CustomElement extends HTMLElement {
   // TODO: move this to props.ts as well somehow?
-  static [propRegistry]: Record<string, PropValue> = {}
-  static props: Record<string, PropValue> = {}
+  static [propRegistry]: PropMap = {}
+  static props: PropMap = {}
   static style = new CSSStyleSheet()
 
   static get observedAttributes() {
@@ -106,7 +107,10 @@ export class CustomElement extends HTMLElement {
     }
 
     this.#lifecycle('mount');
-    this.#onUnmount.add(this.mount() || (() => {}))
+    if (this.mount) {
+      const unmount = this.mount() || (() => {})
+      this.#onUnmount.add(unmount)
+    }
   }
 
   disconnectedCallback() {

@@ -4,23 +4,22 @@ Base class and helpers for creating custom-elements aka web components more conv
 Built on signals `lit-html` providing helpers for event handling.
 
 > [!WARNING]
-> This is still in its infancies and exploration phase. Also the name will
-> *definitely* change. You may look around, you could even use it - I personally
-> use it to build a couple of side projects, but I can't provide any support
-> in its current state.
+> This is still in its exploration phase.
+> You may look around, you could even use it - I use it to build a couple of side projects and for prototyping, but I can't provide any support in its current state.
 
 ## Features
 
-- Fine grained render updates using signals
-- Thin convnience wrapper around native life-cycle hook
-    - `mount()` instead of `connectedCallback()`
+- Built on signals
+- Thin convnience wrappers around native life-cycle hook
+    - `mount()` instead of `connectedCallback()` returning a cleanup
     - `on` instead of `addEventListener()` and manually cleaning up.
 - Highly efficient element re-use during rerenders thanks to `lit-html`
 - Setup of context providers and consumers without orchestration using string keys
     - or more memory efficient using the usual `createContext` route.
     - using the context community standard for interop.
-- No synthetic events, no v-dom, all web.
-- Lightweight (<7.8kb gzip, signals, context, rendering and all)
+- No synthetic events, no v-dom, all web-native features.
+- `cce` shorthand function for function-component-like patterns.
+- Lightweight (~8kb gzip including all features)
 
 ## API Overview
 
@@ -32,7 +31,7 @@ class MyCustomElement extends CustomElement {
     //      html`<my-element .someProp=${someValue}></my-element>`
     static props = {
         simplePropDefault: "default value",
-        // can be a function that serves as a serialiser/transformer
+        // can be a function that serves as a deserialiser/transformer
         someOtherProp: (value = "also default") => value.toUpperCase(),
         // meaning, this works too:
         counter: Number
@@ -109,3 +108,36 @@ class MyCustomElement extends CustomElement {
 customElements.define("my-element", MyCustomElement);
 ```
 
+## `cce` Shorthand function
+
+Resembling function-compnent-style.
+Uses `CustomElement` internally, so all features are available here as well, only with a different, API.
+
+```ts
+cce('my-element', 
+    // define observable attributes/props:
+    { someProp: Number }, // value can be transformer/deserialiser
+
+    // methods, props, and utils are available via arguments
+    ({someProp, consume, mount, html, self}) => {
+    // the body is evaluated once
+    const contextValue = consume('key', 'fallback value');
+
+    mount(() => {
+        // do some on mount setup here
+        return () => {
+            // do any unmount cleanup here
+        }
+    })
+
+    // Return the render function, which is called on every re-render
+    // ie: whenever a signal updates.
+    return () => html`
+        <div>
+            ${someProp()}
+            ${contextValue()}
+        </div>
+    `;
+    }
+)
+```
