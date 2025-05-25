@@ -154,6 +154,8 @@ export class CustomElement extends HTMLElement {
   }
 
   /**
+    * @experimental
+    *
     * Setup is called once from the constructor. It can be async and should be
     * used to setup any initial state or side effects.
     * If you return a promise, the element will not be considered "ready"
