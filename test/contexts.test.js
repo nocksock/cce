@@ -8,7 +8,8 @@ const childEventHandler = sinon.spy()
 class ParentElement extends CustomElement {
   mount() {
     this.on('event-for-parent', parentEventHandler)
-    this.on('event-for-child', () => {
+    this.on('event-for-child', (e) => {
+      e.stopPropagation()
       throw new Error('Should not be called')
     })
   }
@@ -16,7 +17,10 @@ class ParentElement extends CustomElement {
 
 class ChildElement extends CustomElement {
   mount() {
-    this.on('event-for-child', childEventHandler)
+    this.on('event-for-child', (e) => {
+      e.stopPropagation()
+      childEventHandler(e)
+    })
   }
 
   trigger(doc) {

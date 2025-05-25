@@ -34,11 +34,6 @@ export const dispatch = <E extends string | Function, T>(
   }
 }
 
-function stopHandler(cb: (e: Event | CustomEvent) => void, e: Event) {
-  e.stopPropagation()
-  cb(e)
-}
-
 export const addEventListener = <
   E extends string | (Function & { name: string }),
   T,
@@ -60,7 +55,7 @@ export const addEventListener = <
     event = type.name
   }
 
-  const boundHandler = stopHandler.bind(self, handler)
+  const boundHandler = handler.bind(self)
 
   // @ts-ignore
   self.shadowRoot.addEventListener(event, boundHandler)

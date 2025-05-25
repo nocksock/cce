@@ -16,7 +16,10 @@ class ParentElement extends CustomElement {
 
 class ChildElement extends CustomElement {
   mount() {
-    this.on('event-for-child', childEventHandler)
+    this.on('event-for-child', (e) => {
+      e.stopPropagation()
+      childEventHandler(e)
+    })
   }
 
   trigger(doc) {
