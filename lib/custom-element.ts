@@ -173,7 +173,7 @@ export class CustomElement extends HTMLElement {
    * You can return a cleanup function that will be called when the element is
    * disconnected from the DOM - use this for `unmount` logic.
    */
-  mount() {
+  mount() : void | (() => void) {
     return () => {}
   }
 
