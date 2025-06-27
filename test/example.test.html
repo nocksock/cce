@@ -24,7 +24,7 @@
       }
 
       class ChildElement extends CustomElement {
-        value = this.consume('value')
+        value = this.consume('value', 'default consume value')
         render() {
           return html`
             <div>
