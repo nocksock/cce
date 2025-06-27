@@ -6,4 +6,5 @@ export default {
   // in a monorepo you need to set set the root dir to resolve modules
   // rootDir: '../../',
   plugins: [esbuildPlugin({ ts: true, target: 'auto' })],
+  filterBrowserLogs: (log) => !log.args?.at(0)?.startsWith('Lit is in dev mode'),
 };
