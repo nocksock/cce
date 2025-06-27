@@ -1,25 +1,26 @@
 # CCE (working title)
 
-Base class and helpers for creating custom-elements aka web components more conveniently.
-Built on signals `lit-html` providing helpers for event handling.
+Base class and helpers for creating custom-elements aka web components.
+Built on signals.
+Using `lit-html` for blazingly fast and efficient rendering without a vdom.
 
 > [!WARNING]
-> This is still in its exploration phase.
-> You may look around, you could even use it - I use it to build a couple of side projects and for prototyping, but I can't provide any support in its current state.
+> This is still in alpha.
+> You may look around, you could even use it - I use it to build a couple of side projects and for prototyping.
 
-## Features
+## Feature Overview
 
 - Built on signals
-- Thin convnience wrappers around native life-cycle hook
+- Thin wrappers around life-cycle hooks:
     - `mount()` instead of `connectedCallback()` returning a cleanup
     - `on` instead of `addEventListener()` and manually cleaning up.
 - Highly efficient element re-use during rerenders thanks to `lit-html`
 - Setup of context providers and consumers without orchestration using string keys
-    - or more memory efficient using the usual `createContext` route.
+    - and more memory efficient using the conventional `createContext` route.
     - using the context community standard for interop.
 - No synthetic events, no v-dom, all web-native features.
 - `cce` shorthand function for function-component-like patterns.
-- Lightweight (~8kb gzip including all features)
+- Lightweight (~8kb gzip including all the features)
 
 ## API Overview
 
@@ -41,8 +42,6 @@ class MyCustomElement extends CustomElement {
     // but you'll most likely want a prop then.
     #somePrivateState = signal()
 
-    // style is expected to be a CSSStylesheet instance. Create one using 
-    // the builtin `css` template literal, or construct your own.
     static style = css`
         div {
             background: black;
@@ -75,8 +74,7 @@ class MyCustomElement extends CustomElement {
         }
     }
 
-    // Render gets passed `this`, so you can destructure props etc and make
-    // it easier to re-use views.
+    // note: props can be destructured
     render({counter}) {
         // the html tagged template literal is coming straight from lit-html
         return html`
@@ -89,7 +87,7 @@ class MyCustomElement extends CustomElement {
                 <button @click=${() => {
                     // Shorthand for dispatching events that *bubble up* and 
                     // can be caught by shadow dom.
-                    // this.dispatchEvent() works like usual, in case `on` does
+                    // `this.dispatchEvent()` works like usual, in case `on` does
                     // not suit your needs.
                     this.dispatch('simple-event')
                     this.dispatch('custom-event', payload)
@@ -108,10 +106,10 @@ class MyCustomElement extends CustomElement {
 customElements.define("my-element", MyCustomElement);
 ```
 
-## `cce` Shorthand function
+## `cce` Shorthand
 
 Resembling function-compnent-style.
-Uses `CustomElement` internally, so all features are available here as well, only with a different, API.
+Has all the same features, just a different API.
 
 ```ts
 cce('my-element', 
