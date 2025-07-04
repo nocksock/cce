@@ -1,7 +1,7 @@
-export * from "./context";
-export * from "./css";
-export * from "./custom-element";
-export * from "./cce";
-export * from "./directives";
-export { html } from "./html";
-export { signal, effect, computed } from "./signals";
+export * from "./context.js";
+export * from "./css.js";
+export * from "./custom-element.js";
+export * from "./cce.js";
+export * from "./directives.js";
+export { html } from "./html.js";
+export { signal, effect, computed } from "./signals.js";

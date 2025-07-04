@@ -1,8 +1,8 @@
-import { consume, Context, provide } from './context'
-import { render, html } from './html'
-import { signal, effect } from './signals'
-import { invariant } from './errors'
-import { addEventListener, dispatch } from './events'
+import { consume, type Context, provide } from './context.js'
+import { render, html } from './html.js'
+import { signal, effect } from './signals.js'
+import { invariant } from './errors.js'
+import { addEventListener, dispatch } from './events.js'
 
 const getInitialValue = <R>(
   specValue: string | ((v?: string) => R),
@@ -46,16 +46,25 @@ export class CustomElement extends HTMLElement {
   static finalize() {
     for (const key in this.props) {
       const valueFn = this.props[key]
-      this[propRegistry][key] = valueFn
+      this[propRegistry][key] = valueFn!
     }
   }
 
   // TODO: make this static to also track finalization etc
   #lifecycle = signal();
-  constructor() {
+
+  override shadowRoot!: ShadowRoot
+
+  static defaultOptions = {
+    shadowRoot: 'open' as 'open' | 'closed',
+  }
+
+  constructor(opts: {
+    shadowRoot?: 'open' | 'closed'
+  } = CustomElement.defaultOptions) {
     super()
     this.#lifecycle('constructor');
-    this.attachShadow({ mode: 'open' })
+    this.attachShadow({ mode: opts.shadowRoot || 'open' })
 
     const constructor = this.constructor as CustomElementClass
 
@@ -69,7 +78,7 @@ export class CustomElement extends HTMLElement {
     // TODO: extract into module
     this.#lifecycle('constructor:register-acustom-elementssors');
     for (const key in constructor[propRegistry]) {
-      const valueFn = constructor[propRegistry][key]
+      const valueFn = constructor[propRegistry][key]!
       // @ts-expect-error
       const attrValue = this[key] || this.getAttribute(key)
       const initalValue = getInitialValue(valueFn, attrValue)
@@ -82,12 +91,6 @@ export class CustomElement extends HTMLElement {
         },
       })
     }
-
-    this.#lifecycle('setup:before')
-    Promise.resolve(this.setup())
-      .then(() => {
-        this.#lifecycle('setup:after');
-      })
   }
 
   attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
@@ -152,20 +155,6 @@ export class CustomElement extends HTMLElement {
   render(self: typeof this) {
     return html`<slot></slot>`
   }
-
-  /**
-    * @experimental
-    *
-    * Setup is called once from the constructor. It can be async and should be
-    * used to setup any initial state or side effects.
-    * If you return a promise, the element will not be considered "ready"
-    * until the promise resolves. However, the element will still be connected
-    * to the DOM, but it will not call mount() nor will it call render() until
-    * the promise resolves. Instead it will call fallback().
-    *
-    * You can check if the setup is done by checking the setupDone property.
-   */
-  setup() : void | Promise<any> {}
 
   /**
    * Mount is called when the element is connected to the DOM. Convenience to

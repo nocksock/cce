@@ -1,8 +1,9 @@
-import { CustomElement, PropMap } from './custom-element.ts'
-import { stylesheet } from './css'
-import { consume, provide } from './context.ts'
-import { dispatch } from './events.ts'
-import { createCallCollection, invoke } from './functions.ts'
+// @ts-nocheck
+import { CustomElement, type PropMap } from './custom-element.js'
+import { stylesheet } from './css.js'
+import { consume, provide } from './context.js'
+import { dispatch } from './events.js'
+import { createCallCollection, invoke } from './functions.js'
 
 // TODO: collect mount functions and call them all appropriately
 // TODO: collect setup functions and call them all appropriately

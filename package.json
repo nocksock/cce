@@ -2,23 +2,16 @@
   "name": "@nocksock/cce",
   "version": "0.0.10",
   "type": "module",
-  "files": [
-    "dist/cce.js",
-    "index.d.ts"
-  ],
-  "module": "./dist/cce.js",
-  "types": "./index.d.ts",
-  "exports": {
-    "types": "./index.d.ts",
-    "import": "./dist/cce.js"
-  },
+  "main": "dist/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc",
     "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks",
-    "test": "web-test-runner test/**/*.test.{js,html,ts}"
+    "test": "web-test-runner test/**/*.test.{js,html,ts}",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@open-wc/testing": "^4.0.0",
     "@types/sinon": "^17.0.4",
@@ -26,13 +19,16 @@
     "@web/dev-server-legacy": "^2.1.1",
     "@web/test-runner": "^0.20.0",
     "@web/test-runner-mocha": "^0.9.0",
-    "lit-element": "^4.1.1",
+    "esbuild": "^0.25.5",
+    "kloen": "^0.10.0",
+    "lit-html": "^3.2.1",
     "sinon": "^19.0.2",
     "typescript": "~5.7.3",
     "vite": "^6.1.1"
   },
-  "dependencies": {
-    "kloen": "^0.10.0",
-    "lit-html": "^3.2.1"
+  "pnpm": {
+    "overrides": {
+      "kloen": "link:../../Library/pnpm/global/5/node_modules/kloen"
+    }
   }
 }

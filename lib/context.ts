@@ -1,4 +1,4 @@
-import { signal, effect, computed } from './signals'
+import { signal, effect, computed } from './signals.js'
 
 const REQ = 'request-context-signal'
 

@@ -1,5 +1,5 @@
-import { invariant } from './errors'
-import { isFunction, isString } from './predicates'
+import { invariant } from './errors.js'
+import { isFunction, isString } from './predicates.js'
 
 export const dispatch = <E extends string | Function, T>(
   self: EventTarget,
